@@ -1,4 +1,4 @@
-# PK (AUC & Cmax) with different doses
+# PK analysis of AUC & Cmax from a drug and its metabolite with R
 (English) Language: R // Author: Aramis Adriana Rojas Mena & Elisabet Castro Blanco
 
 ## Description
