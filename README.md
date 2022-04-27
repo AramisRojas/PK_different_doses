@@ -23,7 +23,11 @@ Here it is not correct to perform parametric tests, since the assumptions of nor
 - Regression analysis (TBC)
 
 ## Repository content
-
+- Panel1.txt
+- Panel2.txt
+- Panel3.txt
+- Panel4.txt
+- 
 
 ## How to use
 The data are structured in 4 panels with 8 individuals each, for each of which plasma samples are collected before and after treatment. The treatment consists of the administration of a given drug (P) in different increasing doses.
