@@ -1,0 +1,349 @@
+---
+title: "PK (AUC & Cmax) with different doses"
+author: "Aramis Rojas Mena y Elisabet Castro Blanco"
+date: "29 de diciembre de 2018"
+output: word_document
+---
+#Seccion 1
+**1. Conjunto de datos relacionados con la Bioestadistica: valores farmacocinéticos en sangre. **
+La base de datos escogida se trata de los valores farmacocinéticos en sangre para un fármaco indeterminado P y uno de los metabolitos M que se generan endógenamente en el organismo de una persona (sin especificar la fisionomia o patologia que pudiera tener)
+Se ha obtenido de este servidor de un repositorio de bases de datos de diferentes fases de investigación de medicamentos, facilitada por el investigador Thomas E. Bradstreet, de la Facultad de Matemáticas de la John Carroll University (EE.UU.) (http://webserv.jcu.edu/math//faculty/TShort/Bradstreet/index.html)
+Los valores farmacocinéticos estudiados son la AUC (area under the curve, en inglés), que da idea de la biodisponibilidad de forma discreta (se puede considerar un punto determinado en el tiempo) o continua (de tiempo 0 a infinito) de una sustancia en sangre, y la Cmax (concentración máxima en sangre), para dicha sustancia.
+Ambos valores sirven para caracterizar el comportamiento cinético de la sustancia en el organismo, es decir, la velocidad con la que el fármaco P difunde por el organismo con la sangre y podría llegar a las dianas terapéuticas, de forma más o menos inespecífica (factor que depende del tipo de fármaco y células diana, pero es un concepto más extenso), así como la velocidad y cantidad de fármaco remanente una vez se inicie la eliminación de este del organismo.
+En la base de datos utilizada, ambos valores se presentan como discretos, tomados en un punto sin especificar del tiempo, presumiblemente para facilitar el tratamiento de datos. No es la forma que mayor información farmacocinética puede ofrecer, pero es una asunción considerada como correcta en la comunidad científica.
+La razón de elegir una base de datos así atiende al interés común de ambas autoras respecto del comportamiento de un fármaco/sustancia en un organismo vivo animal, de forma que se aunan dos campos científicos separados, con la visión que aporta Elisabet como bióloga y Aramis como farmacéutica.
+
+**2. Tipo de fichero importado y las variables que forman parte de él (tipo, clasificación,...).**
+<p>Los datos están estructurados en 4 paneles con 8 individuos cada uno, para cada uno se extraen muestras de plasma antes y después del tratamiento. El tratamiento consiste en la administración de un fármaco determinado (P) en diferentes dosis crecientes.</p>
+<p>La columna Panel hace referencia al número de panel, Sub es el identificador para cada uno de los sujetos, Cpd se refiere a que estamos midiendo en el plasma, puede ser la concentración del fármaco (P) o la concentración de uno de los metabolitos producidos a partir de la misma. Las siguientes 6 columnas, se agrupan de tres en tres, correpondiendo el primer grupo de 3 a las medidas para el área bajo la curva (AUC, Area Under the Curve), y el segundo grupo de columnas refiriéndose a la medida de la concentración máxima (Cmax).</p>
+```{r}
+library(readr)
+Panel_1 <- read_table2("C:/Users/usuario/OneDrive/Data Science World/Portfolio_Webflow/Repos_Github/PK_different_doses/Panel_1.txt")
+Panel_2 <- read_table2("C:/Users/usuario/OneDrive/Data Science World/Portfolio_Webflow/Repos_Github/PK_different_doses/Panel_2.txt")
+Panel_3 <- read_table2("C:/Users/usuario/OneDrive/Data Science World/Portfolio_Webflow/Repos_Github/PK_different_doses/Panel_3.txt")
+Panel_4 <- read_table2("C:/Users/usuario/OneDrive/Data Science World/Portfolio_Webflow/Repos_Github/PK_different_doses/Panel_4.txt")
+panel1p<-subset(Panel_1,Cpd=="P")
+panel1m<-subset(Panel_1,Cpd=="M")
+panel2p<-subset(Panel_2,Cpd=="P")
+panel2m<-subset(Panel_2,Cpd=="M")
+panel3p<-subset(Panel_3,Cpd=="P")
+panel3m<-subset(Panel_3,Cpd=="M")
+panel4p<-subset(Panel_4,Cpd=="P")
+panel4m<-subset(Panel_4,Cpd=="M")
+colnames(panel1m)<-c("Panel", "Sub", "Cpd", "AUC 10 mg","AUC 20 mg","AUC 40 mg","Cmax 10 mg", "Cmax 20 mg", "Cmax 40 mg")
+colnames(panel1p)<-c("Panel", "Sub", "Cpd", "AUC 10 mg","AUC 20 mg","AUC 40 mg","Cmax 10 mg", "Cmax 20 mg", "Cmax 40 mg")
+colnames(Panel_1)<-c("Panel", "Sub", "Cpd", "AUC 10 mg","AUC 20 mg","AUC 40 mg","Cmax 10 mg", "Cmax 20 mg", "Cmax 40 mg")
+colnames(panel2m)<-c("Panel", "Sub", "Cpd", "AUC 40 mg","AUC 80 mg","AUC 120 mg","Cmax 40 mg", "Cmax 80 mg", "Cmax 120 mg")
+colnames(panel2p)<-c("Panel", "Sub", "Cpd", "AUC 40 mg","AUC 80 mg","AUC 120 mg","Cmax 40 mg", "Cmax 80 mg", "Cmax 120 mg")
+colnames(Panel_2)<-c("Panel", "Sub", "Cpd", "AUC 40 mg","AUC 80 mg","AUC 120 mg","Cmax 40 mg", "Cmax 80 mg", "Cmax 120 mg")
+colnames(panel3m)<-c("Panel", "Sub", "Cpd", "AUC 120 mg","AUC 150 mg","AUC 200 mg","Cmax 120 mg", "Cmax 150 mg", "Cmax 200 mg")
+colnames(panel3p)<-c("Panel", "Sub", "Cpd", "AUC 120 mg","AUC 150 mg","AUC 200 mg","Cmax 120 mg", "Cmax 150 mg", "Cmax 200 mg")
+colnames(Panel_3)<-c("Panel", "Sub", "Cpd", "AUC 120 mg","AUC 150 mg","AUC 200 mg","Cmax 120 mg", "Cmax 150 mg", "Cmax 200 mg")
+colnames(panel4m)<-c("Panel", "Sub", "Cpd", "AUC 200 mg","AUC 250 mg","AUC 300 mg","Cmax 200 mg", "Cmax 250 mg", "Cmax 300 mg")
+colnames(panel4p)<-c("Panel", "Sub", "Cpd", "AUC 200 mg","AUC 250 mg","AUC 300 mg","Cmax 200 mg", "Cmax 250 mg", "Cmax 300 mg")
+colnames(Panel_4)<-c("Panel", "Sub", "Cpd", "AUC 200 mg","AUC 250 mg","AUC 300 mg","Cmax 200 mg", "Cmax 250 mg", "Cmax 300 mg")
+```
+
+**3. Preguntas objetivo que dan una idea de la información contenida en el conjunto de datos escogido.**
+
+<p>- 1. Comprobar dentro de cada una de las siguientes comparaciones propuestas si se cumplen las asunciones para realizar test estadísticos paramétricos en base a una distribución normal - Gaussiana (ver a continuación).</p> 
+<p>De forma general, suelen ser criterios de ajuste a distribución normal y homocedasticidad (igualdad de varianzas)</p> 
+<p>En base al resultado,  ¿es correcto realizar tests paramétricos? ¿Podríamos tomar como rigurosos los resultados obtenidos en los apartados subsiguientes para la toma de decisiones? Indicar y ejecutar los tests mediante R.</p>
+
+<p>https://www.rdocumentation.org/packages/stats/versions/3.5.1/topics/shapiro.test </p>
+<p> _A list with class "htest" containing the following components-- p.value: an approximate p-value for the test. This is said in Royston (1995) to be adequate for p.value < 0.1_ </p>
+
+<p>Respuesta teórica: veremos a continuación por qué no es correcto realizar tests paramétricos, puesto que no se cumplirán las asunciones de normalidad ni homocedasticidad. De ejecutar unos tests paramétricos según una distribución normal, sin probar antes estas asunciones, estaríamos cometiendo un error estadístico grave, que llevaría a extrapolar conclusiones erróneas.</p>
+
+<p>- 2. Para el fármaco P y el metabolito M (por separado), para una dosis cualquiera del Panel 1, que son las dosis más bajas disponibles (10, 20 o 40 mg) ¿se puede decir que existe correlación entre la AUC y la Cmax correspondientes? Tomar cada columna como una variable.</p>
+
+```{r}
+#Fármaco P
+shapiro.test(panel1p$`AUC 20 mg`)
+shapiro.test(panel1p$`Cmax 20 mg`)#F-test no aplica porque las variables estudiadas no cumplen con la normalidad. Para estudiar la correlación con test no paramétricos, se requiere del test de Spearman o Kendall Tau.
+
+cor.test(panel1p$`AUC 20 mg`,panel1p$`Cmax 20 mg`, method = "spearman")#Spearman test
+cor.test(panel1p$`AUC 20 mg`,panel1p$`Cmax 20 mg`, method = "kendall")#Kendall tau test
+
+#Metabolito M
+shapiro.test(panel1m$`AUC 20 mg`)
+shapiro.test(panel1m$`Cmax 20 mg`) #F-test no aplica (idem)
+
+cor.test(panel1m$`AUC 20 mg`,panel1m$`Cmax 20 mg`, method = "spearman")#Spearman test
+cor.test(panel1m$`AUC 20 mg`,panel1m$`Cmax 20 mg`, method = "kendall")#Kendall tau test
+
+```
+
+<p>- 3. Para el valor farmacocinético (PK) AUC, con el fármaco P y el metabolito M por separado, comprobar si se puede decir que existe correlación entre dos dosis bajas (10, 20 o 40 mg) cualesquiera.</p>
+
+```{r}
+#Fármaco P
+shapiro.test(panel1p$`AUC 20 mg`)
+shapiro.test(panel1p$`AUC 40 mg`) #F-test no aplica (idem)
+
+cor.test(panel1p$`AUC 20 mg`,panel1p$`AUC 40 mg`, method = "spearman") #Spearman test
+
+#Metabolito M
+shapiro.test(panel1m$`AUC 20 mg`)
+shapiro.test(panel1m$`AUC 40 mg`) #F-test no aplica (idem)
+
+cor.test(panel1m$`AUC 20 mg`,panel1m$`AUC 40 mg`, method = "spearman") #Spearman test
+```
+
+
+<p>- 4. Para el valor farmacocinético (PK) AUC, con el fármaco P y el metabolito M por separado, comprobar si se puede decir que existe correlación entre dos dosis cualesquiera, siendo una dosis alta (del Panel 4) y otra baja (Panel 1)</p>
+
+```{r}
+#Fármaco P
+shapiro.test(panel1p$`AUC 20 mg`)
+shapiro.test(panel4p$`AUC 250 mg`) #F-test no aplica (idem)
+
+cor.test(panel1p$`AUC 20 mg`, panel4p$`AUC 250 mg`, method = "spearman") #Spearman test
+
+#Metabolito M
+shapiro.test(panel1m$`AUC 20 mg`)
+shapiro.test(panel4m$`AUC 250 mg`) #F-test no aplica (idem)
+
+cor.test(panel1m$`AUC 20 mg`, panel4m$`AUC 250 mg`, method = "spearman") #Spearman test
+```
+
+
+<p>- 5- Para el valor PK AUC de una dosis alta y otra baja (cualesquiera y cada una como una variable), realizar un test para contrastar la hipótesis nula de igualdad de medias entre ambos niveles del factor (según aplique en función de los resultados de correlación entre variables y normalidad/homocedasticidad). ¿Es útil un análisis univariante?</p>
+
+```{r}
+#El análisis a realizar sería un análisis univariante de contraste de hipótesis para dos niveles de un factor. Las variables escogidas, AUC 20 mg y AUC 80 mg han demostrado no estar correlacionadas en el apartado anterior, pero además, tampoco se ajustan a una distribución normal; el test que correspondería hacer sería el test de Mann-Whitney U.
+
+shapiro.test(panel3p$`AUC 200 mg`)
+shapiro.test(panel3m$`AUC 200 mg`)
+shapiro.test(panel2p$`AUC 80 mg`) #?nico que se ajusta a la distribuci?n normal, pero deber?a serlo tambi?n el metabolito para ejecutar un test param?trico, en todo caso.
+shapiro.test(panel2m$`AUC 80 mg`)
+cor.test(panel2p$`AUC 80 mg`, panel2m$`AUC 80 mg`, method = "spearman") #Correlac?on entre P y M
+cor.test(panel4p$`AUC 200 mg`, panel4m$`AUC 200 mg`, method = "spearman")
+
+#Dosis baja: 80 mg.
+wilcox.test(Panel_2$`AUC 80 mg`~Cpd, data = Panel_2)
+#Dosis alta: 200 mg.
+wilcox.test(Panel_4$`AUC 200 mg`~Cpd, data = Panel_4) 
+
+#Interpretación: se puede rechazar la hipótesis nula de igualdad de medias entre ambos niveles del factor.
+```
+
+
+<p>- 6. Para los valor farmacocinéticos (PK) AUC del fármaco P, con las dosis de uno de los paneles (1,2,3,4), comprobar en conjunto si ambas 3 variables seguirían una distribución normal. ¿Qué ocurre? ¿Podemos saber si hay correlación en el comportamiento de AUC de las tres dosis del panel que elijamos de forma simultánea? ¿Qué tipo de análisis son estos? ¿Qué clase de análisis habría que hacer? </p>
+
+```{r}
+library(mvnormtest)
+```
+
+```{r}
+panel_3var_fromP<-subset(panel4p[,c(4,5,6)])
+panel_3var_NONA<-subset(panel_3var_fromP[-6,])
+panel_3var_matr<-data.matrix(panel_3var_NONA)
+```
+
+```{r eval=FALSE, include=FALSE}
+mshapiro.test(panel_3var_matr) #R error message: "system is computationally singular"
+```
+
+_Un mensaje de error como este en R quiere decir que la matriz formada con las variables que queremos estudiar no es invertible, y por tanto, no puede utilizarse para ningún método estadístico que lo requiera, como un análisis multivariante y concurrente de la normalidad; la única solución es estudiarla de forma univariante, un método bastante más lento y que supone más líneas de código (aquí son 3, pero podrían ser muchas más)_
+_Deja entrever además la posible existencia de correlación entre las variables, es decir, que las variables que tomamos como elementos individuales e inmiscibles, en realidad no lo son, porque están correlacionadas. Vamos a desarrollarlo:_
+
+```{r}
+cor(panel_3var_NONA, y = NULL, method = "spearman")
+
+shapiro.test(panel_3var_fromP$`AUC 200 mg`)
+shapiro.test(panel_3var_fromP$`AUC 250 mg`)
+shapiro.test(panel_3var_fromP$`AUC 300 mg`)
+
+cor.test(panel_3var_fromP$`AUC 200 mg`, panel_3var_fromP$`AUC 250 mg`, method = "spearman") #rho = 0.9286
+
+cor.test(panel_3var_fromP$`AUC 200 mg`, panel_3var_fromP$`AUC 300 mg`, method = "spearman")
+#rho = 0.75
+
+cor.test(panel_3var_fromP$`AUC 250 mg`, panel_3var_fromP$`AUC 300 mg`, method = "spearman")
+#rho = 0.8927
+```
+
+_El impacto en la lectura de los resultados figura en el apartado 7 de esta sección_
+
+<p>**4. Análisis descriptivo de los datos.**</p>
+```{r}
+estadistica.descriptiva<- function (x) {
+  a<- na.omit(x[,4:9]) #Eliminamos los registros que tengan NA, y dejamos solo los datos para el resumen estadístico
+  a<-data.frame(a) #Aseguramos que sea un dataframe
+  b<-na.omit(x) #Creamos una tabla de datos sin NA pero con todas las columnas
+  m<-matrix(data= "NA", nrow = 13, ncol=6) #Creamos matriz de resultados vacía
+  colnames(m)<-colnames(x[,4:9]) #Asignamos nombres a las columnas (coincidentes con los nombres de las columnas de los datos originales)
+  nombrefilas<-c("Media","Desviación típica","Varianza","Mínimo","Máximo","Mediana","Rango inferior","Rango superior","0%","25%","50%","75%","100%") #Nombres de las filas (parámetros estadísticos)
+  rownames(m)<-nombrefilas #Renombramos filas de la matriz de resultados
+  panel<-b$Panel[1] #Valor del número de panel
+  cat("El número de panel es: ", panel, "\n") #Datos que se pasan por pantalla
+  cat("El número de mediciones con cada compuesto es: ","\n")#Datos que se pasan por pantalla 
+  cat("- Con la droga (P): ", length(subset(b, Cpd=="P")), "\n")
+  cat("- Con el metabolito (M): ", length(subset(b, Cpd=="M")), "\n")
+  cat("Resumen estadístico:","\n")
+  for (i in 1:6) {
+    #Asignamos las funciones, y creamos un objeto que usaremos mas tarde para rellenar la matriz de resultados
+  media<-mean(a[,i])
+  dt<-sd(a[,i])
+  varianza<-var(a[,i])
+  minimo<-min(a[,i])
+  maximo<-max(a[,i])
+  mediana<-median(a[,i])
+  rango<-range(a[,i])
+  cuantil<-quantile(a[,i])
+  #Rellenamos la matriz de resultados con los objetos creados anteriormente
+  m[1,i]<-media 
+  m[2,i]<-dt 
+  m[3,i]<-varianza 
+  m[4,i]<-minimo
+  m[5,i]<-maximo
+  m[6,i]<-mediana 
+  m[7:8,i]<-rango
+  m[9:13,i]<-cuantil
+  }
+  print(m) #Pasamos por pantalla la matriz de resultados rellenada
+  }
+```
+
+```{r}
+estadistica.descriptiva(panel1m)
+estadistica.descriptiva(panel1p)
+estadistica.descriptiva(panel2m)
+estadistica.descriptiva(panel2p)
+estadistica.descriptiva(panel3m)
+estadistica.descriptiva(panel3p)
+estadistica.descriptiva(panel4m)
+estadistica.descriptiva(panel4p)
+```
+
+```{r}
+library(tidyverse)
+#AUC vs Cmax para dosis 80 mg de metabolito M.
+library(car)
+model_panel2m <- lm(panel2m$`AUC 80 mg` ~ panel2m$`Cmax 80 mg`, data = panel2m) #Linear regression model
+model_panel2m
+a1<-plot(model_panel2m, 1) #Residuals vs fitted. 
+a2<-plot(model_panel2m, 2) #Normal QQ. 
+a3<-plot(model_panel2m, 3) #Homogeneidad en la varianza.
+
+#AUC 200 mg vs AUC 300 mg con segregación M
+b<-ggplot(data = Panel_4, aes(Panel_4$`AUC 200 mg`, Panel_4$`AUC 300 mg`))+geom_jitter(aes(color="Cpd==M"))+geom_jitter(aes(color="Cpd==P"))+geom_smooth(aes(linetype="Cpd==M"))+geom_smooth(aes(linetype="Cpd==P"))+labs(title = "AUC 80 mg vs AUC 200 mg con segregaci?n P/M")
+
+#AUC 20 mg M vs AUC 20 mg P
+c<-ggplot(data = Panel_1, aes(Cpd, `AUC 20 mg`))+geom_boxplot(aes(color="Cpd==M"))+theme_minimal()+labs(title = "Boxplots de AUC 20 mg en M y P")
+d<-c+geom_boxplot(aes(color="Cpd==P"))
+```
+
+**5. Cuestiones de probabilidad y un breve modelo de simulación.**
+
+```{r}
+#Cuestión probabilidad 1: Si suponemos que los valores de AUC de la dosis de 80mg siguen una distribución normal, con media y desviación típica de la muestra. ¿Cuál es la probabilidad  de que AUC para el fármaco este por encima de 1000?
+media80p<-mean(panel2p$`AUC 80 mg`)
+var80p<-var(panel2p$`AUC 80 mg`)
+pnorm(1000,media80p,var80p, lower.tail=F)
+
+#Cuestión probabilidad 2: Si suponemos que los valores de Cmax de la dosis de 120mg siguen una distribución normal,con media y desviación típica de la muestra. ¿Cuál es la probabilidad  de que Cmax para el metabolito  este por debajo de 650?
+media120m<-mean(panel3m$`Cmax 120 mg`)
+var120m<-var(panel3m$`Cmax 120 mg`)
+pnorm(1000,media120m,var120m,lower.tail=T)
+
+#Cuestión probabilidad 3: Si suponemos que los valores de Cmax de la dosis de 20mg siguen una distribución normal, con media y desviación típica de la muestra. ¿Cuál es la probabilidad de que Cmax para el fármaco este entre 70 y 100?
+media20p<-mean(na.omit(panel1p$`Cmax 20 mg`))
+var20p<-var(na.omit(panel1p$`Cmax 20 mg`))
+pnorm(100,media20p,var20p,lower.tail=T) - pnorm(70,media20p,var20p,lower.tail=T) 
+
+#Cuestión de simulación: Estima la desviación típica de la media de la dosis 300mg (AUC) para el metabolito a través de una pequeña simulación.
+#Usaremos un método no paramétrico bootstrap para ello, los pasos de este test son los siguientes: se coge una muestra de n elementos con reemplazo, se calculan la media para cada uno de las simulaciones y de esta forma conseguimos obtener un estimador de la media del grupo.
+n<-8
+nreps<-10000
+m300<-na.omit(panel4m$`AUC 300 mg`)
+muestra.simulada<-matrix(sample(m300,n*nreps,replace=TRUE),nreps,n)
+medias.simulaciones<-apply(muestra.simulada,1,mean)
+sd(medias.simulaciones) #Estimación final de la desviación típica de la muestra
+```
+
+**6. Breve análisis de regresión a partir de las variables dispuestas.**
+
+<p>Desde el apartado 3.2 de esta Secci?n 1, tomamos la pregunta objetivo realizada y, adem?s del pertinente test de correlaci?n entre dos variables para contestar la pregunta objetivo, vamos a hacer un an?lisis de regresi?n lineal para ver la posible relaci?n existente entre estas dos variables.</p>
+
+<p> _Para el f?rmaco P y el metabolito M (por separado), para una dosis cualquiera del Panel 1 (10, 20 o 40 mg) ?se puede decir que existe correlaci?n entre la AUC y la Cmax correspondientes? Tomar cada columna como una variable_ </p>
+
+<p>Recordamos los valores que daban los coeficientes no param?tricos de correlaci?n de Spearman y Kendall. Cualquiera de los dos coeficientes se acepta, siempre que tenga un valor lo m?s cercano a 1. </p>
+
+```{r}
+cor.test(panel1m$`AUC 20 mg`,panel1m$`Cmax 20 mg`, method = "spearman") #Tomamos el coeficiente rho de Spearman por ser el m?s cercano a 1. Rho  = 0.8857
+```
+
+<p> No obstante, probamos a realizar un test no param?trico de correlaci?n entre dos variables (AUC y Cmax de diversas dosis) del f?rmaco P y el metabolito M para detectar alg?n otro valor de rho cercano a 1</p>
+
+```{r}
+cor.test(panel1p$`AUC 20 mg`,panel1p$`Cmax 20 mg`, method = "spearman")
+cor.test(panel2p$`AUC 80 mg`,panel2p$`Cmax 80 mg`, method = "spearman")
+cor.test(panel3p$`AUC 200 mg`,panel3p$`Cmax 200 mg`, method = "spearman")
+cor.test(panel4p$`AUC 300 mg`,panel4p$`Cmax 300 mg`, method = "spearman") #Rho = 0.9643
+```
+
+```{r}
+cor.test(panel1m$`AUC 20 mg`,panel1m$`Cmax 20 mg`, method = "spearman") #Rho = 0.8857
+cor.test(panel2m$`AUC 80 mg`,panel2m$`Cmax 80 mg`, method = "spearman") #Rho = 1
+cor.test(panel3m$`AUC 200 mg`,panel3m$`Cmax 200 mg`, method = "spearman")
+cor.test(panel4m$`AUC 300 mg`,panel4m$`Cmax 300 mg`, method = "spearman") #Rho = 0.9286
+```
+
+<p> _Los siguientes fundamentos te?ricos se han obtenido de la siguiente web especializada en estad?stica computacional:_ http://www.sthda.com/english/articles/39-regression-model-diagnostics/ </p>
+<p> _A first step of this regression diagnostic is to inspect the significance of the regression beta coefficients, as well as, the R2 that tells us how well the linear regression model fits to the data. [...] the linear regression model makes the assumption that the relationship between the predictors (x) and the outcome variable is linear. This might not be true. The relationship could be polynomial or logarithmic. Additionally, the data might contain some influential observations, such as outliers (or extreme values), that can affect the result of the regression._ </p>
+<p> _Linear regression makes several assumptions about the data, such as : Linearity of the data. The relationship between the predictor (x) and the outcome (y) is assumed to be linear. + Normality of residuals. The residual errors are assumed to be normally distributed. + Homogeneity of residuals variance. The residuals are assumed to have a constant variance (homoscedasticity) + Independence of residuals error terms._ </p>
+
+```{r}
+library(car)
+model_panel2m <- lm(panel2m$`AUC 80 mg` ~ panel2m$`Cmax 80 mg`, data = panel2m) #Linear regression model
+model_panel2m
+
+library(ggfortify) # Package for diagnostic plots
+autoplot(model_panel2m)
+library(broom)
+model_panel2m_aug<-augment(model_panel2m) #Valores tabulados de los 4 gr?ficos.
+
+plot(model_panel2m, 1) #Residuals vs fitted. Asunci?n de modelo lineal o no. Aceptable.
+plot(model_panel2m, 2) #Normal QQ. Normalidad de los puntos residuales. Aceptable pero puntos escasos.
+plot(model_panel2m, 3) #Homogeneidad en la varianza de los puntos residuales. Aceptable pero puntos escasos.
+```
+
+<p> - Residuals vs fitted: _A horizontal line, without distinct patterns is an indication for a linear relationship, what is good._ </p>
+
+<p> - Normal QQ: _Used to examine whether the residuals are normally distributed. It's good if residuals points follow the straight dashed line._ </p>
+
+<p> - Scale-location: _Used to check the homogeneity of variance of the residuals (homoscedasticity). Horizontal line with equally spread points is a good indication of homoscedasticity._ </p>
+
+<p> - Residuals vs leverage: _Used to identify influential cases, that is extreme values that might influence the regression results when included or excluded from the analysis_ </p>
+
+_El impacto en la lectura de los resultados figura en el apartado 7 de esta secci?n_
+
+<p>**7.(0,5 puntos) A partir de los datos de origen y el estudio realizado, haced una valoraci?n final.** </p>
+
+De los an?lisis realizados en los apartados anteriores se extraer unas conclusiones que, si bien son bastante robustas, dejan entrever la necesidad de hacer an?lisis estad?sticos en mayor n?mero y dimensi?n (de variables)
+
+_Respecto a los apartados 3.1 a 3.4:_ 
+Los asunciones previas de normalidad y homocedasticidad (igualdad de varianzas) no se cumplen, y por ello se deben de realizar tests no param?trico para estudiar la correlaci?n entre las variables que nos interese estudiar. 
+
+Solo se realiza el test de Shapiro, sin el test F de la varianza, porque es suficiente con no cumplir uno de los dos criterios para que no se deba hacer ning?n test param?trico (aquellos que se corresponden a una determinada distribuci?n estad?stica) Se propone utilizar el test de Spearman, pero tambi?n es correcto realizar el test de Kendall, ambos indicados para estos contextos.
+
+Podemos ver que la relaci?n entre los par?metros farmacocin?ticos AUC y Cmax, para la dosis y factor estudiado, es casi nula, pero es recomendable ver qu? ocurre con el resto de las dosis y/o factores, pues para la dosis de 20/80/300 mg, con el metabolito, la correlaci?n es estad?sticamente significativa, as? como para otras con el f?rmaco P.
+
+No parece haber correlaci?n entre dosis bajas para el par?metro pk AUC (ni factor P ni M), as? como tampoco la hay entre dosis baja y dosis alta (ni factor P ni M) Para todos ellos, el valor de **p-value > 0.05**, superior al nivel de significancia fijado para el test, lo que no nos permite rechazar la hip?tesis nula fijada para cada test.
+
+_Respecto al apartado 3.5:_
+Del test respecto de la igualdad de medias entre los factores P y M de una dosis baja y de otra dosis alta, el resultado obtenido para ambos arroja un **p-value < 0.05**, inferior al nivel de significancia fijado para el test, lo que nos permite rechazar la hip?tesis nula de igualdad de medias entre ambos factores.
+
+_Respecto al apartado 3.6:_
+El an?lisis de las variables de forma aislada o de dos en dos ("pairwise") es un recurso pr?ctico y leve de teor?a, pero **no permite establecer una imagen completa con todas las variables expuestas al mismo tiempo**, que es lo que realmente est? ocurriendo en cualquier proceso biol?gico/qu?mico/f?sico, por lo que las lecturas que pudieran hacerse de estos an?lisis deber?an de ser consideradas como bastante limitadas (por matem?ticamente correctas que sean)
+
+Lo ideal ser?a proseguir, adem?s de con las pruebas de tipo univariante o pairwise vistas durante esta asignatura, con an?lisis multivariante, pero el requisito b?sico para realizar cualquier prueba de este estilo (especialmente los de an?lisis de la varianza multivariable, MANOVA) es que todas las variables estudiadas simult?neamente han de cumplir con la normalidad y ser independientes entre ellas mismas (no correlacionadas) El test multivariable de normalidad no se puede ejecutar por ser la matriz introducida de tipo singular (sin soluci?n), muy probablemente por la correlaci?n probada entre las variables estudiadas. 
+
+_Respecto al an?lisis de regresi?n lineal de la pregunta 6:_
+La lectura se puede hacer de los gr?ficos, que se generan del modelo lineal lm presupuesto. Lo que quer?amos saber es si este modelo es el que mejor se adapta al comportamiento que siguen experimentalmente las dos variables escogidas (AUC 80 mg y Cmax 80 mg para el factor M), un hecho que podemos hallar del gr?fico de puntos residuales-puntos ajustados ("residuals vs fitted"), cuya representaci?n refleja que el ajuste lineal no es bueno, y no es el modelo que mejor se adapta; **su gr?fico se desv?a bastante de una l?nea recta** , que ser?a lo que se obtendr?a en caso de relaci?n lineal entre variables. Ser?a conveniente generar otro modelo lineal con el factor P, para contrastar resultados y poder hacer una lectura m?s robusta.
+
+**En general, y como conclusi?n, buena parte de este estudio es recomendable hacerlo con un tama?o muestral mayor, para poder ver si d?ndose la normalidad, al estudiar la varianza, existe homocedasticidad y as? realizar test param?tricos. Aportar?a algo de informaci?n adicional al estudio de forma global, si bien dichos tests no deber?an de reflejar resultados estad?sticamente diferentes a los obtenidos con los tests no param?tricos.**
+
+**Parece tratarse de un f?rmaco con un comportamiento farmacocin?tico peculiar, muy irregular y heterog?neo para el f?rmaco P y algo menos para su metabolito M, aunque con excepciones remarcables ("influential cases") en ambos factores (AUC 20 mg para M, AUC dosis altas para P.)**
