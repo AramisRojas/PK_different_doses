@@ -29,7 +29,6 @@ Here it is not correct to perform parametric tests, since the assumptions of nor
 The data are structured in 4 panels with 8 individuals each, for each of which plasma samples are collected before and after treatment. The treatment consists of the administration of a given drug (P) in different increasing doses.
 The column Panel refers to the panel number, Sub is the identifier for each of the subjects, Cpd refers to what we are measuring in the plasma, it can be the concentration of the drug (P) or the concentration of one of the metabolites produced from it. The next 6 columns are grouped in threes, with the first group of 3 corresponding to the measurements for the Area Under the Curve (AUC), and the second group of columns referring to the measurement of the maximum concentration (Cmax).
 
-Translated with www.DeepL.com/Translator (free version)
 ## Contact
 If you find a bug in the code or you want to make a comment, write to: aramisrojas.farmacia@gmail.com
 
