@@ -1,4 +1,4 @@
-# PK_different_doses
+# PK with different doses
 (English) Language: R // Author: Aramis Adriana Rojas Mena & Elisabet Castro Blanco
 
 ## Description
