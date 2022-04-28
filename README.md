@@ -25,7 +25,7 @@ Here it is not correct to perform parametric tests, since the assumptions of nor
 ### Discussion
 From the analyses carried out in the previous sections, conclusions can be drawn which, although they are quite robust, suggest the need to carry out statistical analyses on a larger number and dimension (of variables).
 
-With respect to sections 3.1 to 3.4 
+With respect to sections 3.1 to 3.4:
 The previous assumptions of normality and homoscedasticity (equality of variances) are not fulfilled, and therefore non-parametric tests must be performed to study the correlation between the variables we are interested in studying. 
 
 Only Shapiro's test is performed, without the F test of the variance, because it is sufficient not to meet one of the two criteria for no parametric test to be performed (those that correspond to a certain statistical distribution). It is proposed to use Spearman's test, but it is also correct to perform Kendall's test, both indicated for these contexts.
@@ -42,7 +42,7 @@ The analysis of the variables in isolation or in pairs ("pairwise") is a practic
 
 Ideally, in addition to the univariate or pairwise tests seen during this course, we would like to continue with multivariate analysis, but the basic requirement for any such test (especially multivariate analysis of variance, MANOVA) is that all the variables studied simultaneously must comply with normality and be independent among themselves (uncorrelated). The multivariate normality test cannot be performed because the matrix introduced is of a singular type (without solution), most probably due to the correlation tested between the variables studied. 
 
-Regarding the linear regression analysis in question 6:_ _
+Regarding the linear regression analysis in question 6:
 The reading can be made from the graphs, which are generated from the linear model lm budget. What we wanted to know is whether this model is the one that best fits the behaviour experimentally followed by the two variables chosen (AUC 80 mg and Cmax 80 mg for the M factor), a fact that we can find from the graph of residuals vs fitted points, whose representation reflects that the linear fit is not good, and it is not the best-fitting model; **its graph deviates quite a lot from a straight line** , which would be what would be obtained in the case of a linear relationship between variables. It would be convenient to generate another linear model with the P factor, in order to contrast results and to be able to make a more robust reading.
 
 **In general, and as a conclusion, it is advisable to carry out a large part of this study with a larger sample size, to be able to see if, given normality, when studying the variance, there is homoscedasticity and thus be able to carry out parametric tests. It would provide some additional information to the study as a whole, although these tests should not show statistically different results to those obtained with the non-parametric tests.**
