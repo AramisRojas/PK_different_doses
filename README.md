@@ -22,6 +22,33 @@ Here it is not correct to perform parametric tests, since the assumptions of nor
 - Probability issues and a brief simulation model.
 - Regression analysis (TBC)
 
+### Discussion
+From the analyses carried out in the previous sections, conclusions can be drawn which, although they are quite robust, suggest the need to carry out statistical analyses on a larger number and dimension (of variables).
+
+With respect to sections 3.1 to 3.4 
+The previous assumptions of normality and homoscedasticity (equality of variances) are not fulfilled, and therefore non-parametric tests must be performed to study the correlation between the variables we are interested in studying. 
+
+Only Shapiro's test is performed, without the F test of the variance, because it is sufficient not to meet one of the two criteria for no parametric test to be performed (those that correspond to a certain statistical distribution). It is proposed to use Spearman's test, but it is also correct to perform Kendall's test, both indicated for these contexts.
+
+We can see that the relationship between the pharmacokinetic parameters AUC and Cmax, for the dose and factor studied, is almost nil, but it is advisable to see what happens with the rest of the doses and/or factors, as for the 20/80/300 mg dose, with the metabolite, the correlation is statistically significant, as well as for others with the P drug.
+
+There seems to be no correlation between low doses for the PK AUC parameter (neither P nor M factor), nor between low and high doses (neither P nor M factor). For all of them, the **p-value > 0.05** is higher than the significance level established for the test, which does not allow us to reject the null hypothesis established for each test.
+
+With respect to section 3.5:
+From the test regarding the equality of means between the factors P and M of a low dose and another high dose, the result obtained for both gives a **p-value < 0.05**, lower than the significance level set for the test, which allows us to reject the null hypothesis of equality of means between both factors.
+
+With regard to section 3.6:
+The analysis of the variables in isolation or in pairs ("pairwise") is a practical and mild resource of theory, but **does not allow to establish a complete picture with all the variables exposed at the same time**, which is what is really happening in any biological/chemical/physical process, so that the readings that could be made from these analyses should be considered as quite limited (however mathematically correct they may be).
+
+Ideally, in addition to the univariate or pairwise tests seen during this course, we would like to continue with multivariate analysis, but the basic requirement for any such test (especially multivariate analysis of variance, MANOVA) is that all the variables studied simultaneously must comply with normality and be independent among themselves (uncorrelated). The multivariate normality test cannot be performed because the matrix introduced is of a singular type (without solution), most probably due to the correlation tested between the variables studied. 
+
+Regarding the linear regression analysis in question 6:_ _
+The reading can be made from the graphs, which are generated from the linear model lm budget. What we wanted to know is whether this model is the one that best fits the behaviour experimentally followed by the two variables chosen (AUC 80 mg and Cmax 80 mg for the M factor), a fact that we can find from the graph of residuals vs fitted points, whose representation reflects that the linear fit is not good, and it is not the best-fitting model; **its graph deviates quite a lot from a straight line** , which would be what would be obtained in the case of a linear relationship between variables. It would be convenient to generate another linear model with the P factor, in order to contrast results and to be able to make a more robust reading.
+
+**In general, and as a conclusion, it is advisable to carry out a large part of this study with a larger sample size, to be able to see if, given normality, when studying the variance, there is homoscedasticity and thus be able to carry out parametric tests. It would provide some additional information to the study as a whole, although these tests should not show statistically different results to those obtained with the non-parametric tests.**
+
+It seems to be a drug with a peculiar pharmacokinetic behaviour, very irregular and heterogeneous for the drug P and somewhat less so for its metabolite M, although with notable exceptions ("influential cases") in both factors (AUC 20 mg for M, AUC high doses for P.)** **.
+
 ## Repository content
 - Panel1.txt
 - Panel2.txt
