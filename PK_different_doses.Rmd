@@ -265,17 +265,17 @@ sd(medias.simulaciones) #Estimación final de la desviación típica de la muest
 
 **6. Breve análisis de regresión a partir de las variables dispuestas.**
 
-<p>Desde el apartado 3.2 de esta Secci?n 1, tomamos la pregunta objetivo realizada y, adem?s del pertinente test de correlaci?n entre dos variables para contestar la pregunta objetivo, vamos a hacer un an?lisis de regresi?n lineal para ver la posible relaci?n existente entre estas dos variables.</p>
+<p>Desde el apartado 3.2 de esta Sección 1, tomamos la pregunta objetivo realizada y, además del pertinente test de correlación entre dos variables para contestar la pregunta objetivo, vamos a hacer un análisis de regresión lineal para ver la posible relación existente entre estas dos variables.</p>
 
-<p> _Para el f?rmaco P y el metabolito M (por separado), para una dosis cualquiera del Panel 1 (10, 20 o 40 mg) ?se puede decir que existe correlaci?n entre la AUC y la Cmax correspondientes? Tomar cada columna como una variable_ </p>
+<p> _Para el fármaco P y el metabolito M (por separado), para una dosis cualquiera del Panel 1 (10, 20 o 40 mg) ¿se puede decir que existe correlación entre la AUC y la Cmax correspondientes? Tomar cada columna como una variable_ </p>
 
-<p>Recordamos los valores que daban los coeficientes no param?tricos de correlaci?n de Spearman y Kendall. Cualquiera de los dos coeficientes se acepta, siempre que tenga un valor lo m?s cercano a 1. </p>
+<p>Recordamos los valores que daban los coeficientes no paramétricos de correlación de Spearman y Kendall. Cualquiera de los dos coeficientes se acepta, siempre que tenga un valor lo más cercano a 1. </p>
 
 ```{r}
-cor.test(panel1m$`AUC 20 mg`,panel1m$`Cmax 20 mg`, method = "spearman") #Tomamos el coeficiente rho de Spearman por ser el m?s cercano a 1. Rho  = 0.8857
+cor.test(panel1m$`AUC 20 mg`,panel1m$`Cmax 20 mg`, method = "spearman") #Tomamos el coeficiente rho de Spearman por ser el más cercano a 1. Rho  = 0.8857
 ```
 
-<p> No obstante, probamos a realizar un test no param?trico de correlaci?n entre dos variables (AUC y Cmax de diversas dosis) del f?rmaco P y el metabolito M para detectar alg?n otro valor de rho cercano a 1</p>
+<p> No obstante, probamos a realizar un test no paramétrico de correlación entre dos variables (AUC y Cmax de diversas dosis) del fármaco P y el metabolito M para detectar algún otro valor de rho cercano a 1</p>
 
 ```{r}
 cor.test(panel1p$`AUC 20 mg`,panel1p$`Cmax 20 mg`, method = "spearman")
@@ -291,7 +291,7 @@ cor.test(panel3m$`AUC 200 mg`,panel3m$`Cmax 200 mg`, method = "spearman")
 cor.test(panel4m$`AUC 300 mg`,panel4m$`Cmax 300 mg`, method = "spearman") #Rho = 0.9286
 ```
 
-<p> _Los siguientes fundamentos te?ricos se han obtenido de la siguiente web especializada en estad?stica computacional:_ http://www.sthda.com/english/articles/39-regression-model-diagnostics/ </p>
+<p> _Los siguientes fundamentos teóricos se han obtenido de la siguiente web especializada en estadística computacional:_ http://www.sthda.com/english/articles/39-regression-model-diagnostics/ </p>
 <p> _A first step of this regression diagnostic is to inspect the significance of the regression beta coefficients, as well as, the R2 that tells us how well the linear regression model fits to the data. [...] the linear regression model makes the assumption that the relationship between the predictors (x) and the outcome variable is linear. This might not be true. The relationship could be polynomial or logarithmic. Additionally, the data might contain some influential observations, such as outliers (or extreme values), that can affect the result of the regression._ </p>
 <p> _Linear regression makes several assumptions about the data, such as : Linearity of the data. The relationship between the predictor (x) and the outcome (y) is assumed to be linear. + Normality of residuals. The residual errors are assumed to be normally distributed. + Homogeneity of residuals variance. The residuals are assumed to have a constant variance (homoscedasticity) + Independence of residuals error terms._ </p>
 
@@ -303,9 +303,9 @@ model_panel2m
 library(ggfortify) # Package for diagnostic plots
 autoplot(model_panel2m)
 library(broom)
-model_panel2m_aug<-augment(model_panel2m) #Valores tabulados de los 4 gr?ficos.
+model_panel2m_aug<-augment(model_panel2m) #Valores tabulados de los 4 gráficos.
 
-plot(model_panel2m, 1) #Residuals vs fitted. Asunci?n de modelo lineal o no. Aceptable.
+plot(model_panel2m, 1) #Residuals vs fitted. Asunción de modelo lineal o no. Aceptable.
 plot(model_panel2m, 2) #Normal QQ. Normalidad de los puntos residuales. Aceptable pero puntos escasos.
 plot(model_panel2m, 3) #Homogeneidad en la varianza de los puntos residuales. Aceptable pero puntos escasos.
 ```
@@ -318,32 +318,32 @@ plot(model_panel2m, 3) #Homogeneidad en la varianza de los puntos residuales. Ac
 
 <p> - Residuals vs leverage: _Used to identify influential cases, that is extreme values that might influence the regression results when included or excluded from the analysis_ </p>
 
-_El impacto en la lectura de los resultados figura en el apartado 7 de esta secci?n_
+_El impacto en la lectura de los resultados figura en el apartado 7 de esta sección_
 
-<p>**7.(0,5 puntos) A partir de los datos de origen y el estudio realizado, haced una valoraci?n final.** </p>
+<p>**7. Valoración final.** </p>
 
-De los an?lisis realizados en los apartados anteriores se extraer unas conclusiones que, si bien son bastante robustas, dejan entrever la necesidad de hacer an?lisis estad?sticos en mayor n?mero y dimensi?n (de variables)
+De los análisis realizados en los apartados anteriores se extraer unas conclusiones que, si bien son bastante robustas, dejan entrever la necesidad de hacer análisis estadísticos en mayor número y dimensión (de variables)
 
 _Respecto a los apartados 3.1 a 3.4:_ 
-Los asunciones previas de normalidad y homocedasticidad (igualdad de varianzas) no se cumplen, y por ello se deben de realizar tests no param?trico para estudiar la correlaci?n entre las variables que nos interese estudiar. 
+Los asunciones previas de normalidad y homocedasticidad (igualdad de varianzas) no se cumplen, y por ello se deben de realizar tests no param?trico para estudiar la correlación entre las variables que nos interese estudiar. 
 
-Solo se realiza el test de Shapiro, sin el test F de la varianza, porque es suficiente con no cumplir uno de los dos criterios para que no se deba hacer ning?n test param?trico (aquellos que se corresponden a una determinada distribuci?n estad?stica) Se propone utilizar el test de Spearman, pero tambi?n es correcto realizar el test de Kendall, ambos indicados para estos contextos.
+Solo se realiza el test de Shapiro, sin el test F de la varianza, porque es suficiente con no cumplir uno de los dos criterios para que no se deba hacer ningún test paramétrico (aquellos que se corresponden a una determinada distribución estadística) Se propone utilizar el test de Spearman, pero también es correcto realizar el test de Kendall, ambos indicados para estos contextos.
 
-Podemos ver que la relaci?n entre los par?metros farmacocin?ticos AUC y Cmax, para la dosis y factor estudiado, es casi nula, pero es recomendable ver qu? ocurre con el resto de las dosis y/o factores, pues para la dosis de 20/80/300 mg, con el metabolito, la correlaci?n es estad?sticamente significativa, as? como para otras con el f?rmaco P.
+Podemos ver que la relación entre los parámetros farmacocinéticos AUC y Cmax, para la dosis y factor estudiado, es casi nula, pero es recomendable ver qué ocurre con el resto de las dosis y/o factores, pues para la dosis de 20/80/300 mg, con el metabolito, la correlación es estadísticamente significativa, así como para otras con el fármaco P.
 
-No parece haber correlaci?n entre dosis bajas para el par?metro pk AUC (ni factor P ni M), as? como tampoco la hay entre dosis baja y dosis alta (ni factor P ni M) Para todos ellos, el valor de **p-value > 0.05**, superior al nivel de significancia fijado para el test, lo que no nos permite rechazar la hip?tesis nula fijada para cada test.
+No parece haber correlación entre dosis bajas para el parámetro PK AUC (ni factor P ni M), así como tampoco la hay entre dosis baja y dosis alta (ni factor P ni M) Para todos ellos, el valor de **p-value > 0.05**, superior al nivel de significancia fijado para el test, lo que no nos permite rechazar la hipótesis nula fijada para cada test.
 
 _Respecto al apartado 3.5:_
 Del test respecto de la igualdad de medias entre los factores P y M de una dosis baja y de otra dosis alta, el resultado obtenido para ambos arroja un **p-value < 0.05**, inferior al nivel de significancia fijado para el test, lo que nos permite rechazar la hip?tesis nula de igualdad de medias entre ambos factores.
 
 _Respecto al apartado 3.6:_
-El an?lisis de las variables de forma aislada o de dos en dos ("pairwise") es un recurso pr?ctico y leve de teor?a, pero **no permite establecer una imagen completa con todas las variables expuestas al mismo tiempo**, que es lo que realmente est? ocurriendo en cualquier proceso biol?gico/qu?mico/f?sico, por lo que las lecturas que pudieran hacerse de estos an?lisis deber?an de ser consideradas como bastante limitadas (por matem?ticamente correctas que sean)
+El análisis de las variables de forma aislada o de dos en dos ("pairwise") es un recurso práctico y leve de teoría, pero **no permite establecer una imagen completa con todas las variables expuestas al mismo tiempo**, que es lo que realmente está ocurriendo en cualquier proceso biológico/químico/físico, por lo que las lecturas que pudieran hacerse de estos análisis deberían de ser consideradas como bastante limitadas (por matemáticamente correctas que sean)
 
-Lo ideal ser?a proseguir, adem?s de con las pruebas de tipo univariante o pairwise vistas durante esta asignatura, con an?lisis multivariante, pero el requisito b?sico para realizar cualquier prueba de este estilo (especialmente los de an?lisis de la varianza multivariable, MANOVA) es que todas las variables estudiadas simult?neamente han de cumplir con la normalidad y ser independientes entre ellas mismas (no correlacionadas) El test multivariable de normalidad no se puede ejecutar por ser la matriz introducida de tipo singular (sin soluci?n), muy probablemente por la correlaci?n probada entre las variables estudiadas. 
+Lo ideal sería proseguir, además de con las pruebas de tipo univariante o pairwise vistas durante esta asignatura, con análisis multivariante, pero el requisito básico para realizar cualquier prueba de este estilo (especialmente los de análisis de la varianza multivariable, MANOVA) es que todas las variables estudiadas simultáneamente han de cumplir con la normalidad y ser independientes entre ellas mismas (no correlacionadas) El test multivariable de normalidad no se puede ejecutar por ser la matriz introducida de tipo singular (sin solución), muy probablemente por la correlación probada entre las variables estudiadas. 
 
-_Respecto al an?lisis de regresi?n lineal de la pregunta 6:_
-La lectura se puede hacer de los gr?ficos, que se generan del modelo lineal lm presupuesto. Lo que quer?amos saber es si este modelo es el que mejor se adapta al comportamiento que siguen experimentalmente las dos variables escogidas (AUC 80 mg y Cmax 80 mg para el factor M), un hecho que podemos hallar del gr?fico de puntos residuales-puntos ajustados ("residuals vs fitted"), cuya representaci?n refleja que el ajuste lineal no es bueno, y no es el modelo que mejor se adapta; **su gr?fico se desv?a bastante de una l?nea recta** , que ser?a lo que se obtendr?a en caso de relaci?n lineal entre variables. Ser?a conveniente generar otro modelo lineal con el factor P, para contrastar resultados y poder hacer una lectura m?s robusta.
+_Respecto al análisis de regresión lineal de la pregunta 6:_
+La lectura se puede hacer de los gráficos, que se generan del modelo lineal lm presupuesto. Lo que queríamos saber es si este modelo es el que mejor se adapta al comportamiento que siguen experimentalmente las dos variables escogidas (AUC 80 mg y Cmax 80 mg para el factor M), un hecho que podemos hallar del gráfico de puntos residuales-puntos ajustados ("residuals vs fitted"), cuya representación refleja que el ajuste lineal no es bueno, y no es el modelo que mejor se adapta; **su gráfico se desvía bastante de una línea recta** , que sería lo que se obtendría en caso de relación lineal entre variables. Sería conveniente generar otro modelo lineal con el factor P, para contrastar resultados y poder hacer una lectura más robusta.
 
-**En general, y como conclusi?n, buena parte de este estudio es recomendable hacerlo con un tama?o muestral mayor, para poder ver si d?ndose la normalidad, al estudiar la varianza, existe homocedasticidad y as? realizar test param?tricos. Aportar?a algo de informaci?n adicional al estudio de forma global, si bien dichos tests no deber?an de reflejar resultados estad?sticamente diferentes a los obtenidos con los tests no param?tricos.**
+**En general, y como conclusión, buena parte de este estudio es recomendable hacerlo con un tamaño muestral mayor, para poder ver si dándose la normalidad, al estudiar la varianza, existe homocedasticidad y así realizar test paramétricos. Aportaría algo de información adicional al estudio de forma global, si bien dichos tests no deberían de reflejar resultados estadísticamente diferentes a los obtenidos con los tests no paramétricos.**
 
-**Parece tratarse de un f?rmaco con un comportamiento farmacocin?tico peculiar, muy irregular y heterog?neo para el f?rmaco P y algo menos para su metabolito M, aunque con excepciones remarcables ("influential cases") en ambos factores (AUC 20 mg para M, AUC dosis altas para P.)**
+**Parece tratarse de un fármaco con un comportamiento farmacocinético peculiar, muy irregular y heterogéneo para el fármaco P y algo menos para su metabolito M, aunque con excepciones remarcables ("influential cases") en ambos factores (AUC 20 mg para M, AUC dosis altas para P.)**
